@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantS">
         <activity
-            android:name=".presentation.MainActivity"
+            android:name=".presentation.PlantSMainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.PlantS.Splash">

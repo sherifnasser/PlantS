@@ -1,4 +1,4 @@
-package com.sherifnasser.plants.presentation.theme
+package com.sherifnasser.plants.core.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

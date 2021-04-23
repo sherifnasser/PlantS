@@ -3,9 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../../layout/compose-model-1619183442583.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.19375" />
         <entry key="app/src/main/res/drawable/ic_plant_s.xml" value="0.19375" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19375" />
+        <entry key="core/src/main/res/drawable/ic_plant_s.xml" value="0.1" />
       </map>
     </option>
   </component>

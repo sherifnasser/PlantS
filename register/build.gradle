@@ -1,0 +1,75 @@
+import dependencies.Versions
+import dependencies.Google
+import dependencies.AnnotationProcessing
+import dependencies.UnitTest
+import dependencies.InstrumentationTest
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+    id 'de.mannodermaus.android-junit5'
+}
+
+android {
+    compileSdk Versions.compileSdk
+    buildToolsVersion Versions.buildTools
+
+    defaultConfig {
+        minSdk Versions.minSdk
+        targetSdk Versions.targetSdk
+        versionCode Versions.versionCode
+        versionName Versions.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = Versions.jvmTarget
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion Versions.compose
+    }
+
+    packagingOptions {
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
+}
+
+dependencies {
+
+    // Core
+    api project(":core")
+
+    // Hilt
+    implementation Google.hilt_android
+    kapt AnnotationProcessing.hilt_compiler
+
+    // Unit Tests
+    testImplementation UnitTest.Junit5Jupiter.api
+    testRuntimeOnly UnitTest.Junit5Jupiter.engine
+
+    // Instrumented Tests
+    androidTestImplementation InstrumentationTest.AndroidX.junit_ktx
+    androidTestImplementation InstrumentationTest.AndroidX.runner
+    androidTestImplementation InstrumentationTest.Hilt.hilt
+    kaptAndroidTest InstrumentationTest.Hilt.kapt
+    androidTestImplementation InstrumentationTest.compose_ui
+    androidTestImplementation InstrumentationTest.mockk
+}

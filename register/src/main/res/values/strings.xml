@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="plant_s_icon">PlantS Icon</string>
+    <string name="plant_plants_with_plant_s">Plant plants, with PlantS</string>
+    <string name="terms_and_privacy_policy"><![CDATA[Terms & Privacy Policy]]></string>
+    <string name="continue_str">Continue</string>
+</resources>

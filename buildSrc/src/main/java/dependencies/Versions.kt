@@ -12,7 +12,7 @@ object Versions {
 
   // Classpath
   const val gradle = "7.0.0-alpha14"
-  const val kotlin = "1.4.30"
+  const val kotlin = "1.4.32"
   const val hilt = "2.34.1-beta"
   const val junit5 = "1.7.1.1"
 
@@ -27,9 +27,9 @@ object Versions {
   const val viewModel_compose = "1.0.0-alpha04"
   const val nav_compose = "1.0.0-alpha10"
   const val hilt_nav_compose = "1.0.0-alpha01"
+  const val constraint_layout_compose = "1.0.0-alpha05"
 
 
-  const val app_compat = "1.3.0-rc01"
   const val material= "1.3.0"
 
 

@@ -2,7 +2,6 @@ package dependencies
 
 object AndroidX {
 	const val core_ktx = "androidx.core:core-ktx:${Versions.core_ktx}"
-	const val app_compat = "androidx.appcompat:appcompat:${Versions.app_compat}"
 	const val viewModel_ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.viewModel_ktx}"
 
 	object Compose{
@@ -18,6 +17,7 @@ object AndroidX {
 			const val viewModel = "androidx.lifecycle:lifecycle-viewmodel-compose:${Versions.viewModel_compose}"
 			const val navigation = "androidx.navigation:navigation-compose:${Versions.nav_compose}"
 			const val hilt_navigation = "androidx.hilt:hilt-navigation-compose:${Versions.hilt_nav_compose}"
+			const val constraint_layout_compose = "androidx.constraintlayout:constraintlayout-compose:${Versions.constraint_layout_compose}"
 		}
 
 	}

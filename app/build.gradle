@@ -1,5 +1,4 @@
 import dependencies.Versions
-import dependencies.Jetbrains
 import dependencies.AndroidX
 import dependencies.Google
 import dependencies.AnnotationProcessing
@@ -56,34 +55,19 @@ android {
 }
 
 dependencies {
-    // Kotlin
-    implementation Jetbrains.kotlin_stdlib
-    // AndroidX
-    implementation AndroidX.core_ktx
-    // AppCompatActivity
-    implementation AndroidX.app_compat
-    // ViewModel ktx
-    implementation AndroidX.viewModel_ktx
-    // Coroutines
-    implementation Jetbrains.coroutines
-    implementation Jetbrains.coroutines_play_services
+
+    // Register
+    implementation project(":register")
+
+    // Preview for compose
+    implementation AndroidX.Compose.compose_ui_tooling
+
+    // Compose Integrations
+    implementation AndroidX.Compose.Integration.activity
+
     // Hilt
     implementation Google.hilt_android
     kapt AnnotationProcessing.hilt_compiler
-    // Material
-    implementation Google.material
-    // Compose
-    implementation AndroidX.Compose.compose_ui
-    implementation AndroidX.Compose.compose_ui_tooling
-    implementation AndroidX.Compose.compose_foundation
-    implementation AndroidX.Compose.compose_material
-    implementation AndroidX.Compose.compose_icons_core
-    implementation AndroidX.Compose.compose_icons_extended
-    // Compose Integrations
-    implementation AndroidX.Compose.Integration.activity
-    implementation AndroidX.Compose.Integration.viewModel
-    implementation AndroidX.Compose.Integration.navigation
-    implementation AndroidX.Compose.Integration.hilt_navigation
 
     // Unit Tests
     testImplementation UnitTest.Junit5Jupiter.api
