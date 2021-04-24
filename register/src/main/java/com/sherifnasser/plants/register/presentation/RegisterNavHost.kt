@@ -17,8 +17,13 @@ fun NavGraphBuilder.registerNavHost(navController: NavHostController){
         startDestination = RegisterNavScreen.Welcome.route,
         route = NavHostRoute.Register.route
     ){
+
         composable(RegisterNavScreen.Welcome.route){
             WelcomeScreen(navController = navController)
+        }
+
+        composable(RegisterNavScreen.TermsAndPrivacyPolicy.route){
+            // Todo -> Add Terms & Privacy Policy Screen
         }
 
         composable(RegisterNavScreen.EnterPhoneNumber.route){

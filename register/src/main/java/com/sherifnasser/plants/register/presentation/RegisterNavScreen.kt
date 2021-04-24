@@ -13,5 +13,7 @@ internal sealed class RegisterNavScreen(val route:String){
 
     object Welcome:RegisterNavScreen("Welcome")
 
+    object TermsAndPrivacyPolicy:RegisterNavScreen("Terms & Privacy Policy")
+
     object EnterPhoneNumber:RegisterNavScreen("Enter phone number")
 }
