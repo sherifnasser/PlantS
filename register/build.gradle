@@ -22,7 +22,7 @@ android {
         versionCode Versions.versionCode
         versionName Versions.versionName
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.sherifnasser.plants.register.PlantSRegisterTestRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -49,6 +49,10 @@ android {
     packagingOptions {
         exclude "META-INF/AL2.0"
         exclude "META-INF/LGPL2.1"
+    }
+
+    sourceSets{
+        androidTest.java.srcDirs += ["${project(':core').projectDir}/src/androidTest/java"]
     }
 }
 

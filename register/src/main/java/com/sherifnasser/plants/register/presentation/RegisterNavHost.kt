@@ -17,7 +17,6 @@ fun NavGraphBuilder.registerNavHost(navController: NavHostController){
         startDestination = RegisterNavScreen.Welcome.route,
         route = NavHostRoute.Register.route
     ){
-
         composable(RegisterNavScreen.Welcome.route){
             WelcomeScreen(navController = navController)
         }

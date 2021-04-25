@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -30,10 +27,12 @@ internal fun WelcomeScreen(navController:NavHostController){
     PlantSTheme {
 
         ConstraintLayout(
-            modifier = Modifier.fillMaxSize().padding(
-                horizontal = 36.dp,
-                vertical = 24.dp
-            )
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    horizontal = 36.dp,
+                    vertical = 24.dp
+                )
         ) {
 
             val (plantSIcon,text,terms,continueBtn)=createRefs()
@@ -63,25 +62,29 @@ internal fun WelcomeScreen(navController:NavHostController){
             Text(
                 text = stringResource(R.string.terms_and_privacy_policy),
                 color = Color(0xFF0645AD),
-                modifier = Modifier.constrainAs(terms){
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(continueBtn.top,24.dp)
-                }.clickable {
-                    navController.navigate(RegisterNavScreen.TermsAndPrivacyPolicy.route)
-                }
+                modifier = Modifier
+                    .constrainAs(terms) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(continueBtn.top, 24.dp)
+                    }
+                    .clickable {
+                        navController.navigate(RegisterNavScreen.TermsAndPrivacyPolicy.route)
+                    }
             )
-
 
             Button(
                 onClick = {
                     navController.navigate(RegisterNavScreen.EnterPhoneNumber.route)
                 },
-                modifier = Modifier.fillMaxWidth().height(48.dp).constrainAs(continueBtn){
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(48.dp)
+                    .constrainAs(continueBtn) {
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        bottom.linkTo(parent.bottom)
+                    }
             ) {
                 Text(
                     text = stringResource(id = R.string.continue_str),
