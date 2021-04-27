@@ -91,6 +91,7 @@ dependencies {
     testRuntimeOnly UnitTest.Junit5Jupiter.engine
 
     // Instrumented Tests
+    androidTestImplementation InstrumentationTest.AndroidX.truth_ktx
     androidTestImplementation InstrumentationTest.AndroidX.junit_ktx
     androidTestImplementation InstrumentationTest.AndroidX.runner
     androidTestImplementation InstrumentationTest.Hilt.hilt

@@ -8,6 +8,8 @@ sealed class NavHostRoute(val route:String){
 
     /**
      * Nav host route for register module
+     *
+     * @see NavHostRoute
      */
     object Register:NavHostRoute("Register")
 

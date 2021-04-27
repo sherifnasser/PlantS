@@ -3,12 +3,13 @@ package com.sherifnasser.plants.register.presentation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.navigation
 import com.sherifnasser.plants.core.ui.NavHostRoute
 import com.sherifnasser.plants.register.presentation.ui.welcome.WelcomeScreen
 
 /**
- * Nav host route for register module
+ * Nav host for register module
  *
  * @param navController the main nav host controller from main nav host
  */
@@ -18,7 +19,14 @@ fun NavGraphBuilder.registerNavHost(navController: NavHostController){
         route = NavHostRoute.Register.route
     ){
         composable(RegisterNavScreen.Welcome.route){
-            WelcomeScreen(navController = navController)
+            WelcomeScreen(
+                navigateToTermsAndPrivacyPolicyScreen = {
+                    navController.navigate(RegisterNavScreen.TermsAndPrivacyPolicy.route)
+                },
+                navigateToEnterPhoneNumberScreen = {
+                    navController.navigate(RegisterNavScreen.EnterPhoneNumber.route)
+                }
+            )
         }
 
         composable(RegisterNavScreen.TermsAndPrivacyPolicy.route){

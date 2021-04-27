@@ -1,15 +1,13 @@
 package com.sherifnasser.plants.register.presentation.ui.welcome
 
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.sherifnasser.plants.core.util.assertCurrentRouteIs
-import com.sherifnasser.plants.core.util.assertCurrentRouteIsNot
+import com.google.common.truth.Truth.assertThat
+import com.sherifnasser.plants.core.util.stringResource
 import com.sherifnasser.plants.register.R
-import com.sherifnasser.plants.register.presentation.RegisterNavScreen
-import com.sherifnasser.plants.register.util.runTestRegisterNavHost
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,31 +18,44 @@ class TestWelcomeScreen {
     @get:Rule
     val composeTestRule=createComposeRule()
 
+    private var navigateToTermsAndPrivacyPolicyScreenInvokeCount=0
+
+    private var navigateToEnterPhoneNumberScreenInvokeCount=0
+
+    @Before
+    fun setUp(){
+        composeTestRule.setContent {
+            WelcomeScreen(
+                navigateToTermsAndPrivacyPolicyScreen = {
+                    navigateToTermsAndPrivacyPolicyScreenInvokeCount++
+                },
+                navigateToEnterPhoneNumberScreen = {
+                    navigateToEnterPhoneNumberScreenInvokeCount++
+                }
+            )
+        }
+    }
+
     @Test
     fun clickTermsAndPrivacyPolicy_navigateToTermsAndPrivacyPolicyScreen(){
-        lateinit var termsAndPrivacyPolicyText:String
-        val navController=composeTestRule.runTestRegisterNavHost{
-            termsAndPrivacyPolicyText=stringResource(R.string.terms_and_privacy_policy)
-        }
+
+
+        val termsAndPrivacyPolicyText=composeTestRule.stringResource(id=R.string.terms_and_privacy_policy)
 
         composeTestRule.onNodeWithText(termsAndPrivacyPolicyText).performClick()
 
-        navController.assertCurrentRouteIsNot(RegisterNavScreen.Welcome.route)
-        navController.assertCurrentRouteIs(RegisterNavScreen.TermsAndPrivacyPolicy.route)
+        assertThat(navigateToTermsAndPrivacyPolicyScreenInvokeCount).isEqualTo(1)
+
     }
 
     @Test
     fun clickContinueBtn_navigateToEnterPhoneNumberScreen(){
 
-        lateinit var continueBtnText:String
-
-        val navController=composeTestRule.runTestRegisterNavHost{
-            continueBtnText=stringResource(R.string.continue_str)
-        }
+        val continueBtnText=composeTestRule.stringResource(id=R.string.continue_str)
 
         composeTestRule.onNodeWithText(continueBtnText).performClick()
 
-        navController.assertCurrentRouteIsNot(RegisterNavScreen.Welcome.route)
-        navController.assertCurrentRouteIs(RegisterNavScreen.EnterPhoneNumber.route)
+        assertThat(navigateToEnterPhoneNumberScreenInvokeCount).isEqualTo(1)
+
     }
 }

@@ -23,7 +23,10 @@ import com.sherifnasser.plants.register.R
 import com.sherifnasser.plants.register.presentation.RegisterNavScreen
 
 @Composable
-internal fun WelcomeScreen(navController:NavHostController){
+internal fun WelcomeScreen(
+    navigateToTermsAndPrivacyPolicyScreen:()->Unit,
+    navigateToEnterPhoneNumberScreen:()->Unit
+){
     PlantSTheme {
 
         ConstraintLayout(
@@ -69,13 +72,13 @@ internal fun WelcomeScreen(navController:NavHostController){
                         bottom.linkTo(continueBtn.top, 24.dp)
                     }
                     .clickable {
-                        navController.navigate(RegisterNavScreen.TermsAndPrivacyPolicy.route)
+                        navigateToTermsAndPrivacyPolicyScreen.invoke()
                     }
             )
 
             Button(
                 onClick = {
-                    navController.navigate(RegisterNavScreen.EnterPhoneNumber.route)
+                    navigateToEnterPhoneNumberScreen.invoke()
                 },
                 modifier = Modifier
                     .fillMaxWidth()

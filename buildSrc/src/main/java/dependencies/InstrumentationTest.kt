@@ -3,6 +3,7 @@ package dependencies
 object InstrumentationTest {
 
   object AndroidX{
+    const val truth_ktx = "androidx.test.ext:truth:${Versions.androidx_truth_ktx}"
     const val junit_ktx = "androidx.test.ext:junit:${Versions.androidx_junit_ktx}"
     const val runner = "androidx.test:runner:${Versions.androidx_test}"
   }
