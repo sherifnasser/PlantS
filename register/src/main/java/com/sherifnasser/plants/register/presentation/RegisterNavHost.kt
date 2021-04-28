@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.navigation
 import com.sherifnasser.plants.core.ui.NavHostRoute
+import com.sherifnasser.plants.register.presentation.ui.phone.EnterPhoneNumberScreen
 import com.sherifnasser.plants.register.presentation.ui.welcome.WelcomeScreen
 
 /**
@@ -34,7 +35,7 @@ fun NavGraphBuilder.registerNavHost(navController: NavHostController){
         }
 
         composable(RegisterNavScreen.EnterPhoneNumber.route){
-            // Todo -> Add Enter Phone Number Screen
+            EnterPhoneNumberScreen()
         }
     }
 }

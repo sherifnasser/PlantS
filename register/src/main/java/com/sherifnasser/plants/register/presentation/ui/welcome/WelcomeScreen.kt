@@ -33,7 +33,7 @@ internal fun WelcomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    horizontal = 36.dp,
+                    horizontal = 32.dp,
                     vertical = 24.dp
                 )
         ) {
@@ -53,7 +53,7 @@ internal fun WelcomeScreen(
 
             Text(
                 text = stringResource(R.string.plant_plants_with_plant_s),
-                style = TextStyle(fontSize = 36.sp, textAlign = TextAlign.Center),
+                style = TextStyle(fontSize = 18.sp, textAlign = TextAlign.Center),
                 modifier = Modifier.constrainAs(text){
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)

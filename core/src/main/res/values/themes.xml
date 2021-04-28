@@ -1,0 +1,7 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.PlantS" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/red_a400</item>
+        <item name="colorPrimaryDark">@color/dark_red_a400</item>
+        <item name="colorAccent">@color/teal_a700</item>
+    </style>
+</resources>

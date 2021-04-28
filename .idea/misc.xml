@@ -4,11 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/compose-model-1619183442583.xml" value="0.1" />
+        <entry key="../../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/background_splash.xml" value="0.19375" />
         <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.19375" />
         <entry key="app/src/main/res/drawable/ic_plant_s.xml" value="0.19375" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.19375" />
         <entry key="core/src/main/res/drawable/ic_plant_s.xml" value="0.1" />
+        <entry key="register/src/main/res/layout/country_code_text_field.xml" value="0.75" />
+        <entry key="register/src/main/res/layout/plant_s_text_field.xml" value="0.13994565217391305" />
       </map>
     </option>
   </component>

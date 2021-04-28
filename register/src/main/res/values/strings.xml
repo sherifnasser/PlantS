@@ -4,4 +4,10 @@
     <string name="plant_plants_with_plant_s">Plant plants, with PlantS</string>
     <string name="terms_and_privacy_policy"><![CDATA[Terms & Privacy Policy]]></string>
     <string name="continue_str">Continue</string>
+    <string name="enter_your_phone_number_to_get_started">Enter your phone number to get started</string>
+    <string name="you_will_receive_a_verification_code_carrier_rates_may_apply">You will receive a verification code. Carrier rates may apply.</string>
+    <string name="phone_number">Phone number</string>
+    <string name="next">Next</string>
+    <string name="select_your_country">Select your country</string>
+    <string name="code">Code</string>
 </resources>
