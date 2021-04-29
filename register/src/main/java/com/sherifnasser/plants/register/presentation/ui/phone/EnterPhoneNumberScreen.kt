@@ -1,6 +1,9 @@
 package com.sherifnasser.plants.register.presentation.ui.phone
 
+import android.util.Log
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -11,19 +14,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.sherifnasser.plants.core.ui.components.PlantSOutlinedTextField
 import com.sherifnasser.plants.core.ui.theme.PlantSTheme
 import com.sherifnasser.plants.register.R
 
+@ExperimentalComposeUiApi
 @Composable
 fun EnterPhoneNumberScreen(){
     PlantSTheme {
@@ -34,13 +44,21 @@ fun EnterPhoneNumberScreen(){
                     horizontal = 32.dp,
                     vertical = 72.dp
                 )
+
         ){
 
+            val phoneNumberFocus = remember {FocusRequester()}
+            val keyboardController=LocalSoftwareKeyboardController.current
             val (text1,text2,country,phoneNumber,nextBtn)=createRefs()
+            var countryText by remember { mutableStateOf("") }
+            var showDialog by remember { mutableStateOf(false) }
+            val onDismiss ={showDialog=false}
+            var countryCodeText by remember { mutableStateOf("") }
+            var phoneNumberText by remember { mutableStateOf("") }
 
             Text(
                 text = stringResource(R.string.enter_your_phone_number_to_get_started),
-                style = TextStyle(fontSize = 18.sp, textAlign = TextAlign.Center),
+                style = TextStyle(fontSize = 24.sp, textAlign = TextAlign.Center),
                 modifier = Modifier.constrainAs(text1){
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -51,7 +69,7 @@ fun EnterPhoneNumberScreen(){
 
             Text(
                 text = stringResource(id = R.string.you_will_receive_a_verification_code_carrier_rates_may_apply),
-                style = TextStyle(fontSize = 12.sp,textAlign = TextAlign.Center),
+                style = TextStyle(textAlign = TextAlign.Center),
                 modifier = Modifier.constrainAs(text2) {
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
@@ -59,10 +77,8 @@ fun EnterPhoneNumberScreen(){
                 })
 
 
-            var countryText by remember { mutableStateOf("") }
-
-
             OutlinedTextField(
+                readOnly = true,
                 value = countryText,
                 onValueChange = {countryText=it},
                 singleLine=true,
@@ -79,8 +95,12 @@ fun EnterPhoneNumberScreen(){
                         end.linkTo(parent.end)
                         top.linkTo(text2.bottom, 16.dp)
                     }
+                    .onFocusEvent {
+                        if (it == FocusState.Active)
+                            showDialog = true
+                    }
+                    .focusable(enabled = !showDialog)
             )
-
 
 
             Row(
@@ -93,7 +113,6 @@ fun EnterPhoneNumberScreen(){
                     }
             ){
 
-                var countryCodeText by remember { mutableStateOf("") }
 
                 PlantSOutlinedTextField(
                     value = countryCodeText,
@@ -102,17 +121,22 @@ fun EnterPhoneNumberScreen(){
                             countryCodeText=it
                     },
                     maxLines = 1,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
                     leadingIcon = {
                         Icon(imageVector = Icons.Default.Add,contentDescription = "",tint=Color.Black)
                     },
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .focusOrder { next = phoneNumberFocus }
+                    ,
                     contentHorizontalPadding = 0.dp
                 )
 
                 Spacer(modifier = Modifier.padding(start = 12.dp))
-                
-                var phoneNumberText by remember { mutableStateOf("") }
+
                 OutlinedTextField(
                     value = phoneNumberText,
                     onValueChange = {phoneNumberText=it},
@@ -120,14 +144,25 @@ fun EnterPhoneNumberScreen(){
                     label={
                           Text(text = stringResource(R.string.phone_number))
                     },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-                    modifier = Modifier.weight(3f)
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                            btnOnClick("Keyboard")
+                        }
+                    ),
+                    modifier = Modifier
+                        .weight(3f)
+                        .focusRequester(phoneNumberFocus)
                 )
             }
 
 
             Button(
-                onClick = {},
+                onClick = { btnOnClick("Button")},
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
@@ -140,6 +175,29 @@ fun EnterPhoneNumberScreen(){
                 Text(text = stringResource(R.string.next))
             }
 
+            if(showDialog){
+                Dialog(onDismissRequest = onDismiss) {
+                    Card{
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            Text(text = "Hi")
+                            Button(onClick = onDismiss) {
+                                Text(text = "Cancel")
+                            }
+                        }
+                    }
+                }
+            }
         }
+
     }
+}
+
+private const val TAG = "EnterPhoneNumberScreen"
+
+private fun btnOnClick(from:String){
+    Log.d(TAG, "btnOnClick: $from")
 }
