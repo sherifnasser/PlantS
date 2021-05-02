@@ -12,5 +12,5 @@ object PhoneNumberModule {
 
     @SystemLocale
     @Provides
-    fun provideSystemLocale(): Locale = Locale.getDefault()
+    fun provideSystemLocale():Locale=Locale.getDefault()
 }

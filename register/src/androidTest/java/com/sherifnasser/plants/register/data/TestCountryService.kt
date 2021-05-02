@@ -6,10 +6,12 @@ import com.sherifnasser.plants.register.data.abstraction.CountryService
 import com.sherifnasser.plants.register.di.PhoneNumberModule
 import com.sherifnasser.plants.register.di.SystemLocale
 import com.sherifnasser.plants.register.domain.model.Country
+import com.sherifnasser.plants.register.domain.util.CountryIsoNameException
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,7 +48,15 @@ class TestCountryService {
     }
 
     @Test
-    fun testGetCountryByCallingCode_returnCorrectCountryInArabic(){
+    fun testGetSimCountry_egyptianSim_returnEgyptInArabic(){
+        val actualCountry=countryService
+            .getSimCountry()
+
+        assertThat(actualCountry).isEqualTo(expectedCountry)
+    }
+
+    @Test
+    fun testGetCountryByCallingCode_codeIs20_returnEgyptInArabic(){
         val actualCountry=countryService
             .getCountryByCallingCode(callingCode = expectedCountry.callingCode)
 
@@ -54,7 +64,7 @@ class TestCountryService {
     }
 
     @Test
-    fun testGetCountryByIsoName_returnCorrectCountryInArabic(){
+    fun testGetCountryByIsoName_isoIsEG_returnEgyptInArabic(){
         val actualCountry=countryService
             .getCountryByIsoName(isoName = expectedCountry.isoName)
 
