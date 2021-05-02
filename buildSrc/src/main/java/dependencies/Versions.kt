@@ -42,5 +42,5 @@ object Versions {
   const val androidx_test = "1.3.0"
   const val androidx_junit_ktx = "1.1.3-alpha04"
   const val androidx_truth_ktx = "1.4.0-alpha05"
-  //const val truth = "1.1.2"
+  const val truth = "1.1.2"
 }

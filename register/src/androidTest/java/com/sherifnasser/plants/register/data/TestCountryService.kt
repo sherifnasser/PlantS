@@ -6,12 +6,10 @@ import com.sherifnasser.plants.register.data.abstraction.CountryService
 import com.sherifnasser.plants.register.di.PhoneNumberModule
 import com.sherifnasser.plants.register.di.SystemLocale
 import com.sherifnasser.plants.register.domain.model.Country
-import com.sherifnasser.plants.register.domain.util.CountryIsoNameException
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

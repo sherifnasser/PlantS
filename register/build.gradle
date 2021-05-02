@@ -71,6 +71,7 @@ dependencies {
     // Unit Tests
     testImplementation UnitTest.Junit5Jupiter.api
     testRuntimeOnly UnitTest.Junit5Jupiter.engine
+    testImplementation UnitTest.truth
 
     // Instrumented Tests
     androidTestImplementation InstrumentationTest.AndroidX.truth_ktx
