@@ -1,5 +1,6 @@
 package com.sherifnasser.plants.register.presentation
 
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -14,6 +15,7 @@ import com.sherifnasser.plants.register.presentation.ui.welcome.WelcomeScreen
  *
  * @param navController the main nav host controller from main nav host
  */
+@ExperimentalComposeUiApi
 fun NavGraphBuilder.registerNavHost(navController: NavHostController){
     navigation(
         startDestination = RegisterNavScreen.Welcome.route,

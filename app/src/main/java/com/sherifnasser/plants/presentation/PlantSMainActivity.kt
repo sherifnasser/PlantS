@@ -3,6 +3,7 @@ package com.sherifnasser.plants.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.sherifnasser.plants.R
@@ -13,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class PlantSMainActivity:ComponentActivity(){
 
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState:Bundle?){
         setTheme(R.style.Theme_PlantS)
         super.onCreate(savedInstanceState)

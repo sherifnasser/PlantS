@@ -61,6 +61,9 @@ dependencies {
     // Core
     api project(":core")
 
+    // Libphonenumber
+    implementation "com.googlecode.libphonenumber:libphonenumber:8.12.22"
+
     // Hilt
     implementation Google.hilt_android
     kapt AnnotationProcessing.hilt_compiler
