@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EmptySource
+import org.junit.jupiter.params.provider.ValueSource
 
 class CountryTests {
 
@@ -14,65 +17,37 @@ class CountryTests {
     @DisplayName("When instantiating a country")
     inner class WhenInstantiatingCountry{
 
-        @DisplayName("Iso name is 0 chars at length throws a CountryIsoNameException")
-        @Test
-        fun isoNameLess0CharLength(){
+        @ParameterizedTest
+        @EmptySource        // 0 length
+        @ValueSource(strings=[
+            "e",            // 1 length
+            "e ",           // 2 length but has space
+            "  ",           // 2 length but blank
+            "egy",          // greater than 2
+            "egypt",        // greater than 2
+            "EGY",          // greater than 2 all upper case, to test checking for length before all upper case
+        ])
+        @DisplayName("Iso name isn't 2 chars at length or it has space throws a CountryIsoNameException")
+        fun isoNameCharactersLength(isoName:String){
 
             val e=assertThrows(CountryIsoNameException::class.java) {
                 Country(
                     name = "Egypt",
-                    isoName = "",
+                    isoName = isoName,
                     callingCode = 20
                 )
             }
 
             assertThat(e).hasMessageThat().contains("Egypt")
-            assertThat(e).hasMessageThat().contains("\"\"")
+            assertThat(e).hasMessageThat().contains("\"$isoName\"")
             assertThat(e).hasMessageThat().contains(
                 CountryIsoNameException.Cause.Length2Chars.message
             )
         }
 
-        @DisplayName("Iso name is 1 char at length throws a CountryIsoNameException")
+
         @Test
-        fun isoNameLess1CharLength(){
-
-            val e=assertThrows(CountryIsoNameException::class.java) {
-                Country(
-                    name = "Egypt",
-                    isoName = "e",
-                    callingCode = 20
-                )
-            }
-
-            assertThat(e).hasMessageThat().contains("Egypt")
-            assertThat(e).hasMessageThat().contains("\"e\"")
-            assertThat(e).hasMessageThat().contains(
-                CountryIsoNameException.Cause.Length2Chars.message
-            )
-        }
-
-        @DisplayName("Iso name is greater than 2 chars throws a CountryIsoNameException")
-        @Test
-        fun isoNameGreaterThan2CharsLength(){
-
-            val e=assertThrows(CountryIsoNameException::class.java) {
-                Country(
-                    name = "Egypt",
-                    isoName = "egy",
-                    callingCode = 20
-                )
-            }
-
-            assertThat(e).hasMessageThat().contains("Egypt")
-            assertThat(e).hasMessageThat().contains("\"egy\"")
-            assertThat(e).hasMessageThat().contains(
-                CountryIsoNameException.Cause.Length2Chars.message
-            )
-        }
-
-        @DisplayName("With lower case isoName throws a CountryIsoNameException")
-        @Test
+        @DisplayName("Iso name is lower case throws a CountryIsoNameException")
         fun isoNameAllUpperCase(){
 
             val e=assertThrows(CountryIsoNameException::class.java) {
@@ -89,7 +64,5 @@ class CountryTests {
                 CountryIsoNameException.Cause.AllUpperCase.message
             )
         }
-
     }
-
 }

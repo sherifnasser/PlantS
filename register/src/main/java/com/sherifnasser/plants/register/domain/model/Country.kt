@@ -8,7 +8,7 @@ data class Country(
     val callingCode:Int
 ){
     init {
-        if(isoName.length!=2)
+        if(isoName.trim().length!=2)
             throw CountryIsoNameException(
                 countryName = name,
                 countryIsoName = isoName,

@@ -70,6 +70,7 @@ dependencies {
 
     // Unit Tests
     testImplementation UnitTest.Junit5Jupiter.api
+    testImplementation UnitTest.Junit5Jupiter.params
     testRuntimeOnly UnitTest.Junit5Jupiter.engine
     testImplementation UnitTest.truth
 
