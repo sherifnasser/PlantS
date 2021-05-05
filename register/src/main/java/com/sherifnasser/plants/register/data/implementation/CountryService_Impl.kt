@@ -1,20 +1,38 @@
 package com.sherifnasser.plants.register.data.implementation
 
+import android.content.Context
 import android.telephony.TelephonyManager
-import com.google.i18n.phonenumbers.PhoneNumberUtil
+import androidx.core.os.ConfigurationCompat
 import com.sherifnasser.plants.register.data.abstraction.CountryService
-import com.sherifnasser.plants.register.di.SystemLocale
 import com.sherifnasser.plants.register.domain.model.Country
+import com.sherifnasser.plants.register.domain.util.UnknownCountryException
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.Locale
 import javax.inject.Inject
 
-class CountrySevice_Impl
+class CountryService_Impl
 @Inject
 constructor(
+    @ApplicationContext private val context: Context,
     private val telephonyManager: TelephonyManager,
-    private val phoneNumberUtil: PhoneNumberUtil,
-    @SystemLocale private val systemLocal:Locale
+    private val countriesMap: Map<String,Int>
 ):CountryService{
+
+    private val systemLocale get() = ConfigurationCompat.getLocales(context.resources.configuration)[0]
+
+    private val countries by lazy {
+        countriesMap.entries.map { e->
+            val isoName=e.key
+            val callingCode=e.value
+            Country(
+                name = getDisplayName(isoName = isoName),
+                isoName = isoName,
+                callingCode = callingCode
+            )
+        }.sortedBy { it.name }
+    }
+
+    override fun getAllCountries(): List<Country> = countries
 
     override fun getSimCountry(): Country {
         val isoName=telephonyManager.simCountryIso.toUpperCase(Locale.ROOT)
@@ -47,19 +65,24 @@ constructor(
         )
     }
 
-
-
-
-
     private fun getCallingCode(isoName: String):Int{
-        return phoneNumberUtil.getCountryCodeForRegion(isoName.toUpperCase(Locale.ROOT))
+        return countriesMap[isoName]?: throw UnknownCountryException(isoName=isoName)
     }
 
     private fun getIsoName(callingCode: Int):String{
-        return phoneNumberUtil.getRegionCodeForCountryCode(callingCode)
+        countriesMap.entries.forEach { e->
+            if(e.value==callingCode)
+                return e.key
+        }
+        throw UnknownCountryException(callingCode=callingCode)
     }
 
     private fun getDisplayName(isoName: String):String{
-        return Locale("",isoName.toUpperCase(Locale.ROOT)).getDisplayCountry(systemLocal)
+        if(countriesMap[isoName]==null)
+            throw UnknownCountryException(isoName = isoName)
+
+        val countryLocale=Locale("",isoName.toUpperCase(Locale.ROOT))
+
+        return countryLocale.getDisplayCountry(systemLocale)
     }
 }

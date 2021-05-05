@@ -4,6 +4,8 @@ import com.sherifnasser.plants.register.domain.model.Country
 
 interface CountryService {
 
+    fun getAllCountries():List<Country>
+
     fun getSimCountry():Country
 
     fun getCountryByCallingCode(callingCode:Int):Country
