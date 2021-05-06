@@ -41,13 +41,6 @@ class TestCountryService {
     }
 
     @Test
-    fun testGetSimCountry_egyptianSimAndSystemLocaleIsArabic_returnEgyptInArabic(){
-        val actualCountry=countryService.getSimCountry()
-
-        assertThat(actualCountry).isEqualTo(expectedCountry)
-    }
-
-    @Test
     fun testGetCountryByCallingCode_codeIs20AndSystemLocaleIsArabic_returnEgyptInArabic(){
         val actualCountry=countryService
             .getCountryByCallingCode(callingCode = expectedCountry.callingCode)

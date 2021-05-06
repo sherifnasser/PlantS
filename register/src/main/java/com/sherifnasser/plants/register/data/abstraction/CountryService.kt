@@ -6,8 +6,6 @@ interface CountryService {
 
     fun getAllCountries():List<Country>
 
-    fun getSimCountry():Country
-
     fun getCountryByCallingCode(callingCode:Int):Country
 
     fun getCountryByIsoName(isoName:String):Country

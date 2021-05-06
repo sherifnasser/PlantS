@@ -1,7 +1,6 @@
 package com.sherifnasser.plants.register.data.implementation
 
 import android.content.Context
-import android.telephony.TelephonyManager
 import androidx.core.os.ConfigurationCompat
 import com.sherifnasser.plants.register.data.abstraction.CountryService
 import com.sherifnasser.plants.register.domain.model.Country
@@ -14,7 +13,6 @@ class CountryService_Impl
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
-    private val telephonyManager: TelephonyManager,
     private val countriesMap: Map<String,Int>
 ):CountryService{
 
@@ -33,17 +31,6 @@ constructor(
     }
 
     override fun getAllCountries(): List<Country> = countries
-
-    override fun getSimCountry(): Country {
-        val isoName=telephonyManager.simCountryIso.toUpperCase(Locale.ROOT)
-        val callingCode=getCallingCode(isoName = isoName)
-        val name=getDisplayName(isoName = isoName)
-        return Country(
-            name = name,
-            isoName = isoName,
-            callingCode = callingCode
-        )
-    }
 
     override fun getCountryByCallingCode(callingCode: Int): Country {
         val isoName=getIsoName(callingCode = callingCode)
