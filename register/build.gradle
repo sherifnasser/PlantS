@@ -62,7 +62,7 @@ dependencies {
     api project(":core")
 
     // Libphonenumber
-    implementation "com.googlecode.libphonenumber:libphonenumber:8.12.22"
+    api "com.googlecode.libphonenumber:libphonenumber:8.12.22"
 
     // Hilt
     implementation Google.hilt_android

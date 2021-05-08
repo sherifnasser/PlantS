@@ -3,8 +3,10 @@ package com.sherifnasser.plants.register.data
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.sherifnasser.plants.register.data.abstraction.PhoneNumberService
+import com.sherifnasser.plants.register.domain.util.NoSimCardException
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -33,10 +35,20 @@ class TestPhoneNumberService {
         )
 
     @Test
-    fun testGetSimCountry_egyptianSimCard_returnEG(){
+    fun testGetSimCountryIsoName_egyptianSimCard_returnEG(){
         val isoName=phoneNumberService.getSimCountryIsoName()
 
         assertThat(isoName).isEqualTo("EG")
+    }
+
+    /**
+     * Just remove sim card
+     */
+    @Test
+    fun testGetSimCountryIsoName_noSimCard_throwsNoSimCardException(){
+        assertThrows(NoSimCardException::class.java){
+            phoneNumberService.getSimCountryIsoName()
+        }
     }
 
     @Test
