@@ -3,7 +3,6 @@ package com.sherifnasser.plants.register.presentation.ui.phone
 import android.util.Log
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActionScope
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -11,13 +10,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
@@ -27,7 +24,6 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.constraintlayout.compose.ConstrainedLayoutReference
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintLayoutScope
@@ -75,24 +71,39 @@ internal fun EnterPhoneNumberScreen(
                 code = viewModel.countryCodeText.value,
                 onCodeChange = {
                     viewModel.onTriggerEvent(
-                        EnterPhoneNumberEvent.EnterCountryCode(code = it)
+                        EnterPhoneNumberEvent.OnEnterCountryCode(code = it)
                     )
                 },
                 phoneNumber = viewModel.phoneNumberText.value,
                 onPhoneNumberChange = {
                     viewModel.onTriggerEvent(
-                        EnterPhoneNumberEvent.EnterNumber(number = it)
+                        EnterPhoneNumberEvent.OnEnterNumber(number = it)
                     )
                 },
-                phoneNumberFocusRequester = viewModel.phoneNumberFocusRequester.value,
-                keyboardController = LocalSoftwareKeyboardController.current
+                phoneNumberFocusRequester = viewModel.phoneNumberFocusRequester.value
             )
 
             NextButton(ref = nextBtnRef, linkTopToBottomOfRef = phoneNumberRowRef)
 
-            CountriesDialog(isShown = isCountriesDialogShown) {
-                viewModel.onTriggerEvent(EnterPhoneNumberEvent.CloseCountriesDialog)
-            }
+
+            CountriesDialog(
+                isShown = isCountriesDialogShown,
+                onDismissRequest = {
+                    viewModel.onTriggerEvent(EnterPhoneNumberEvent.CloseCountriesDialog)
+                },
+                query = viewModel.dialogQueryText.value,
+                onQueryChange = {
+                    viewModel.onTriggerEvent(
+                        EnterPhoneNumberEvent.OnCountriesDialogQueryChange(query = it)
+                    )
+                },
+                displayedCountries = viewModel.countriesInDialog.value,
+                onCountrySelected = {
+                    viewModel.onTriggerEvent(
+                        EnterPhoneNumberEvent.OnCountrySelectedFromDialog(country = it)
+                    )
+                }
+            )
         }
     }
 }
@@ -173,9 +184,10 @@ private fun ConstraintLayoutScope.PhoneNumberRow(
     onCodeChange:(String)->Unit,
     phoneNumber:String,
     onPhoneNumberChange:(String)->Unit,
-    phoneNumberFocusRequester:FocusRequester,
-    keyboardController: SoftwareKeyboardController?
+    phoneNumberFocusRequester:FocusRequester
 ){
+    val keyboardController=LocalSoftwareKeyboardController.current
+
     Row(
         modifier= Modifier
             .fillMaxWidth()

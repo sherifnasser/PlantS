@@ -4,6 +4,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.focus.FocusRequester
 import androidx.lifecycle.ViewModel
+import com.sherifnasser.plants.register.domain.model.Country
 import com.sherifnasser.plants.register.domain.util.NoSimCardException
 import com.sherifnasser.plants.register.domain.util.UnknownCountryException
 import com.sherifnasser.plants.register.presentation.ui.phone.event.EnterPhoneNumberEvent
@@ -22,12 +23,18 @@ constructor(private val repository: EnterPhoneNumberRepository):ViewModel(){
     private val _phoneNumberText by lazy{ mutableStateOf("") }
     private val _phoneNumberFocusRequester by lazy{ mutableStateOf(FocusRequester()) }
     private val _isCountriesDialogShown by lazy{ mutableStateOf(false) }
+    private val _dialogQueryText by lazy{ mutableStateOf("") }
+    private val _allCountries by lazy{ mutableStateOf(repository.getAllCountries()) }
+    private val _countriesInDialog by lazy{ mutableStateOf(_allCountries.value) }
 
     val countryState:State<CountryState> get() = _countryState
     val countryCodeText:State<String> get() = _countryCodeText
     val phoneNumberText:State<String> get() = _phoneNumberText
     val phoneNumberFocusRequester:State<FocusRequester> get() = _phoneNumberFocusRequester
     val isCountriesDialogShown:State<Boolean> get() = _isCountriesDialogShown
+    val dialogQueryText:State<String> get() = _dialogQueryText
+    val countriesInDialog:State<List<Country>> get() = _countriesInDialog
+
 
     init {
         try {
@@ -44,14 +51,16 @@ constructor(private val repository: EnterPhoneNumberRepository):ViewModel(){
 
     fun onTriggerEvent(event: EnterPhoneNumberEvent){
         when(event){
-            is EnterPhoneNumberEvent.EnterCountryCode -> handleEnterCountryCodeEvent(event.code)
-            is EnterPhoneNumberEvent.EnterNumber -> handleEnterNumberEvent(event.number)
+            is EnterPhoneNumberEvent.OnEnterCountryCode -> handleOnEnterCountryCodeEvent(event.code)
+            is EnterPhoneNumberEvent.OnEnterNumber -> handleOnEnterNumberEvent(event.number)
             EnterPhoneNumberEvent.DisplayCountriesDialog -> handleDisplayCountriesDialogEvent()
+            is EnterPhoneNumberEvent.OnCountriesDialogQueryChange -> handleOnCountriesDialogQueryChangeEvent(event.query)
+            is EnterPhoneNumberEvent.OnCountrySelectedFromDialog -> handleOnCountrySelectedFromDialogEvent(event.country)
             EnterPhoneNumberEvent.CloseCountriesDialog -> handleCloseCountriesDialogEvent()
         }
     }
 
-    private fun handleEnterCountryCodeEvent(callingCode:String){
+    private fun handleOnEnterCountryCodeEvent(callingCode:String){
         if(callingCode.length<=3){
             _countryCodeText.value=callingCode
             if(callingCode.isEmpty())
@@ -69,7 +78,7 @@ constructor(private val repository: EnterPhoneNumberRepository):ViewModel(){
         }
     }
 
-    private fun handleEnterNumberEvent(number: String){
+    private fun handleOnEnterNumberEvent(number: String){
         formatNumberField(newNumber = number)
     }
 
@@ -79,6 +88,30 @@ constructor(private val repository: EnterPhoneNumberRepository):ViewModel(){
 
     private fun handleCloseCountriesDialogEvent(){
         _isCountriesDialogShown.value=false
+        _dialogQueryText.value=""
+    }
+
+    private fun handleOnCountriesDialogQueryChangeEvent(query:String){
+        _dialogQueryText.value=query
+        val allCountries=_allCountries.value
+        val countriesQuery=query.trim()
+
+        _countriesInDialog.value=
+            if(countriesQuery.isEmpty())allCountries
+            else allCountries.filter {
+                it.name.startsWith(
+                    prefix = query,
+                    ignoreCase = true
+                )
+            }
+    }
+
+    private fun handleOnCountrySelectedFromDialogEvent(country: Country){
+        _countryState.value=CountryState.Selected(country)
+        _countryCodeText.value=country.callingCode.toString()
+        _phoneNumberFocusRequester.value.requestFocus()
+        formatNumberField()
+        _dialogQueryText.value=""
     }
 
     private fun formatNumberField(newNumber:String=_phoneNumberText.value){
