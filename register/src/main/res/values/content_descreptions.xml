@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cd_country_field_in_enterPhoneNumberScreen">Country field in EnterPhoneNumberScreen</string>
+    <string name="cd_country_code_field_in_enterPhoneNumberScreen">Country code field in EnterPhoneNumberScreen</string>
+    <string name="cd_phone_number_field_in_enterPhoneNumberScreen">Phone number field in EnterPhoneNumberScreen</string>
+    <string name="cd_next_btn_in_enterPhoneNumberScreen">Next button in EnterPhoneNumberScreen</string>
+    <string name="cd_countries_dialog_in_enterPhoneNumberScreen">Countries dialog in EnterPhoneNumberScreen</string>
+    <string name="cd_query_field_in_countries_dialog_in_enterPhoneNumberScreen">Query field in countries dialog in EnterPhoneNumberScreen</string>
+</resources>

@@ -16,6 +16,8 @@ import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -146,6 +148,8 @@ private fun ConstraintLayoutScope.CountryField(
     isFocusable:Boolean
 ){
 
+    val contentDesc=stringResource(R.string.cd_country_field_in_enterPhoneNumberScreen)
+
     val countryText=when(countryState){
         CountryState.Unselected->stringResource(id = R.string.select_your_country)
         is CountryState.Selected->countryState.country.name
@@ -158,9 +162,12 @@ private fun ConstraintLayoutScope.CountryField(
         onValueChange = {},
         singleLine=true,
         trailingIcon = {
-            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "",tint = Color.Black)
+            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null,tint = Color.Black)
         },
         modifier = Modifier
+            .semantics {
+                contentDescription=contentDesc
+            }
             .fillMaxWidth()
             .constrainAs(ref = ref) {
                 start.linkTo(parent.start)
@@ -187,6 +194,8 @@ private fun ConstraintLayoutScope.PhoneNumberRow(
     phoneNumberFocusRequester:FocusRequester
 ){
     val keyboardController=LocalSoftwareKeyboardController.current
+    val codeContentDesc=stringResource(R.string.cd_country_code_field_in_enterPhoneNumberScreen)
+    val phoneNumberContentDesc=stringResource(R.string.cd_phone_number_field_in_enterPhoneNumberScreen)
 
     Row(
         modifier= Modifier
@@ -197,6 +206,7 @@ private fun ConstraintLayoutScope.PhoneNumberRow(
                 top.linkTo(linkTopToBottomOfRef.bottom, 16.dp)
             }
     ){
+
 
 
         PlantSOutlinedTextField(
@@ -211,6 +221,9 @@ private fun ConstraintLayoutScope.PhoneNumberRow(
                 Icon(imageVector = Icons.Default.Add,contentDescription = "",tint=Color.Black)
             },
             modifier = Modifier
+                .semantics {
+                    contentDescription=codeContentDesc
+                }
                 .weight(1f)
                 .focusOrder { next = phoneNumberFocusRequester }
             ,
@@ -243,6 +256,9 @@ private fun ConstraintLayoutScope.PhoneNumberRow(
                 }
             ),
             modifier = Modifier
+                .semantics {
+                    contentDescription=phoneNumberContentDesc
+                }
                 .weight(3f)
                 .focusRequester(phoneNumberFocusRequester)
         )
@@ -254,12 +270,17 @@ private fun ConstraintLayoutScope.NextButton(
     ref:ConstrainedLayoutReference,
     linkTopToBottomOfRef:ConstrainedLayoutReference
 ){
+    val contentDesc=stringResource(R.string.cd_next_btn_in_enterPhoneNumberScreen)
+
     Button(
         onClick = { btnOnClick("Button")},
         modifier = Modifier
+            .semantics{
+                contentDescription=contentDesc
+            }
             .fillMaxWidth()
             .height(48.dp)
-            .constrainAs(ref = ref) {
+            .constrainAs(ref = ref){
                 start.linkTo(parent.start)
                 end.linkTo(parent.end)
                 top.linkTo(linkTopToBottomOfRef.bottom, 16.dp)

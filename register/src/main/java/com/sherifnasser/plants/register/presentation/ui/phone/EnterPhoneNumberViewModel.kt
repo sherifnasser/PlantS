@@ -62,12 +62,14 @@ constructor(private val repository: EnterPhoneNumberRepository):ViewModel(){
 
     private fun handleOnEnterCountryCodeEvent(callingCode:String){
         if(callingCode.length<=3){
-            _countryCodeText.value=callingCode
-            if(callingCode.isEmpty())
+            var code=""
+            callingCode.forEach{if(it.isDigit())code+=it}
+            _countryCodeText.value=code
+            if(code.isEmpty())
                 _countryState.value=CountryState.Unselected
             else{
                 try {
-                    val newCountry=repository.getCountryByCallingCode(callingCode=callingCode.toInt())
+                    val newCountry=repository.getCountryByCallingCode(callingCode=code.toInt())
                     _countryState.value=CountryState.Selected(newCountry)
                     _phoneNumberFocusRequester.value.requestFocus()
                     formatNumberField()
@@ -112,6 +114,7 @@ constructor(private val repository: EnterPhoneNumberRepository):ViewModel(){
         _phoneNumberFocusRequester.value.requestFocus()
         formatNumberField()
         _dialogQueryText.value=""
+        _countriesInDialog.value=_allCountries.value
     }
 
     private fun formatNumberField(newNumber:String=_phoneNumberText.value){

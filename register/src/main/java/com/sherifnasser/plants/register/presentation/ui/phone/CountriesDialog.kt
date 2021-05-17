@@ -21,11 +21,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -43,8 +46,12 @@ internal fun CountriesDialog(
     onCountrySelected:(Country)->Unit
 ){
     if(isShown){
+        val contentDesc= stringResource(id = R.string.cd_countries_dialog_in_enterPhoneNumberScreen)
         Dialog(onDismissRequest = onDismissRequest) {
-            Card(shape = RoundedCornerShape(12.dp)){
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                modifier = Modifier.semantics {contentDescription=contentDesc}
+            ){
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -83,8 +90,11 @@ private fun SearchCountriesTextField(
     onQueryChange:(String)->Unit
 ){
     val keyboardController=LocalSoftwareKeyboardController.current
+    val contentDesc=stringResource(id = R.string.cd_query_field_in_countries_dialog_in_enterPhoneNumberScreen)
 
-    Row(modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)){
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .padding(horizontal = 16.dp)){
         TextField(
             value = query,
             onValueChange = onQueryChange,
@@ -116,54 +126,71 @@ private fun SearchCountriesTextField(
             modifier = Modifier
                 .fillMaxWidth()
                 .clip(CircleShape)
-                .border(width = 0.5.dp,color = Color.DarkGray,shape=CircleShape)
+                .border(width = 0.5.dp, color = Color.DarkGray, shape = CircleShape)
+                .semantics { contentDescription = contentDesc }
         )
     }
 }
 
 @Composable
 private fun CountriesList(displayedCountries:List<Country>,onCountrySelected:(Country)->Unit){
-
     LazyColumn(
         modifier = Modifier.fillMaxHeight(0.75f),
         contentPadding = PaddingValues(vertical = 16.dp, horizontal = 0.dp)
     ){
+        val textStyle=TextStyle(
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        )
 
-        items(displayedCountries){country->
-
-            Card(
-                modifier = Modifier.clickable {
-                    onCountrySelected.invoke(country)
-                }
-            ){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp, horizontal = 32.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-
-                    val textStyle=TextStyle(
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
+        if(displayedCountries.isEmpty()){
+            item{
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ){
                     Text(
-                        text = country.name,
-                        style = textStyle
-                    )
-
-
-                    Text(
-                        text = "+${country.callingCode}",
-                        style = textStyle
+                        text = stringResource(id = R.string.no_matching_countries),
+                        style = textStyle,
+                        textAlign = TextAlign.Center
                     )
                 }
-
-                Divider(
-                    modifier = Modifier.fillMaxWidth()
-                )
             }
         }
+        else{
+            items(displayedCountries){country->
+                Card(
+                    modifier = Modifier.clickable{
+                        onCountrySelected.invoke(country)
+                    }
+                ){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp, horizontal = 32.dp)
+                            .semantics(mergeDescendants = true){},
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+
+                        Text(
+                            text = country.name,
+                            style = textStyle
+                        )
+
+
+                        Text(
+                            text = "+${country.callingCode}",
+                            style = textStyle
+                        )
+                    }
+
+                    Divider(
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        }
+
     }
 }

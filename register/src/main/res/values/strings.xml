@@ -12,4 +12,5 @@
     <string name="code">Code</string>
     <string name="unknown_country">Unknown country</string>
     <string name="search">Search</string>
+    <string name="no_matching_countries">No matching countries</string>
 </resources>
